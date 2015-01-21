@@ -1,14 +1,14 @@
 var elixir = require('laravel-elixir'),
     gulp = require("gulp"),
     compass = require('gulp-compass'),
-    utilities = require('laravel-elixir/ingredients/helpers/Utilities'),
-    Notification = require('laravel-elixir/ingredients/helpers/Notification'),
+    utilities = require('laravel-elixir/ingredients/commands/Utilities'),
+    Notification = require('laravel-elixir/ingredients/commands/Notification'),
     _ = require('underscore');
 
 elixir.extend("compass", function(src, outputDir, options) {
 
     var config = this,
-        publicDir = './public/',
+        publicDir = config.cssOutput + '/../',
         defaultOptions = {
             config_file: false,
             sourcemap:   false,
@@ -18,7 +18,8 @@ elixir.extend("compass", function(src, outputDir, options) {
             font:        publicDir + 'fonts',
             sass:        config.assetsDir + 'scss',
             css:         outputDir || config.cssOutput,
-            js:          config.jsOutput
+            js:          config.jsOutput,
+            debug: false
         };
 
     options = _.extend(defaultOptions, options);
@@ -40,7 +41,8 @@ elixir.extend("compass", function(src, outputDir, options) {
                 font: options.font,
                 image: options.image,
                 javascript: options.js,
-                sourcemap: options.sourcemap
+                sourcemap: options.sourcemap,
+                debug: options.debug
             })).on('error', onError)
             .pipe(new Notification().message('Compass Compiled!'));
     });
